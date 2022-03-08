@@ -14,5 +14,10 @@ export default defineComponent({
   components: {
     HelloWorld,
   },
+  data() {
+    return {
+      a: "123",
+    };
+  },
 });
 </script>
