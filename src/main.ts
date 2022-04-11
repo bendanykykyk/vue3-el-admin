@@ -22,6 +22,7 @@ app.use(store)
 store.dispatch('login/loadLocalLogin')
 
 app.use(router)
+// 导入el图标
 for (const name in ElIcons) {
   app.component(name, (ElIcons as any)[name])
 }
