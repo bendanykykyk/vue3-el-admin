@@ -5,7 +5,7 @@
       <span v-if="!collapse" class="title">小郁餐馆</span>
     </div>
     <el-menu
-      default-active="/category"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -57,8 +57,9 @@
 
 <script lang="ts">
 // import { useRouter } from 'vue-router'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 export default defineComponent({
   name: 'NavMenu',
   props: {
@@ -74,6 +75,9 @@ export default defineComponent({
     const store = useStore()
     // const router = useRouter()
     const userMenus = computed(() => store.state.login.userMenus)
+
+    const route = useRoute()
+    const defaultValue = ref(route.path)
     // const handleMenuItemClick = (subItem: any) => {
     //   console.log('--------')
     //   console.log(subItem.path)
@@ -82,7 +86,8 @@ export default defineComponent({
     //   })
     // }
     return {
-      userMenus
+      userMenus,
+      defaultValue
       // handleMenuItemClick
     }
   }

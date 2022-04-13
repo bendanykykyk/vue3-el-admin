@@ -1,3 +1,4 @@
+import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
 
 export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
@@ -29,4 +30,40 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenu)
 
   return routes
+}
+
+/**
+ * @description: 顶多2级菜单的转化面包屑 [{父},{子}]
+ * @param {any} userMenu 菜单路由对象
+ * @param {string} currentPath 当前的路由
+ * @return {IBreadcrumb[]} 返回一个IBreadcrumb类型的数组
+ */
+// userMenus
+//  [{
+// 	"_id": "d4107ab16247e7030440370e5a81608c",
+// 	"children": [{
+// 		"children": [],
+// 		"id": "m1648879734796",
+// 		"name": "用户管理",
+// 		"parentId": "m1648879363329",
+// 		"path": "/main/user",
+// 		"uid": "1646354774615"
+// 	}],
+// 	"id": "m1648879363329",
+// 	"name": "用户管理",
+// 	"parentId": "0",
+// 	"path": "/user",
+// 	"uid": "1646354774615"
+// }
+// ]
+export function pathMapBreadcrumbs(
+  userMenu: any[],
+  currentPath: string
+): IBreadcrumb[] {
+  const breadcrumbs: IBreadcrumb[] = []
+  for (const parentMenu of userMenu) {
+    // if(parentMenu)
+    // TODO: 写完这个方法
+  }
+  return breadcrumbs
 }

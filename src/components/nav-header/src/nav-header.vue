@@ -8,7 +8,9 @@
     /></el-icon>
 
     <div class="content">
-      <div>面包屑</div>
+      <div>
+        <u-breadcrumb :breadcrumbs="breadcrumbs"></u-breadcrumb>
+      </div>
       <div>
         <user-info />
       </div>
@@ -17,14 +19,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+
 import UserInfo from './user-info.vue'
+import UBreadcrumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
 // import { Fold } from '@element-plus/icons-vue'
 export default defineComponent({
   emits: ['foldChange'],
   components: {
     // Fold
-    UserInfo
+    UserInfo,
+    UBreadcrumb
   },
   setup(props, { emit }) {
     const isFold = ref(false)
@@ -32,9 +40,19 @@ export default defineComponent({
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
+    // 获得当前路由下，父菜单以及子菜单，并且放到相同数组中
+    const breadcrumbs = computed(() => {
+      const store = useStore()
+      const route = useRoute()
+      const userMenus = store.state.login.userMenus
+      const currentPath = route.path
+
+      return pathMapBreadcrumbs(userMenus, currentPath)
+    })
 
     return {
       isFold,
+      breadcrumbs,
       handleFoldClick
     }
   }
