@@ -24,6 +24,10 @@
             :preview-teleported="true"
           ></el-image>
         </template>
+        <template #handler="scope">
+          <el-button link type="primary" size="small">Detail</el-button>
+          <el-button link type="primary" size="small">Edit</el-button>
+        </template>
         <!-- <template #createTime="scope">
           {{ $filters.formatTime(scope.row.createTime) }}
         </template> -->
@@ -74,7 +78,8 @@ export default defineComponent({
         label: '创建时间',
         minWidth: '250'
         // slotName: 'createTime'
-      }
+      },
+      { label: '操作', minWidth: '120', slotName: 'handler', fixed: 'right' }
     ]
 
     const onSearch = (formData: any) => {
