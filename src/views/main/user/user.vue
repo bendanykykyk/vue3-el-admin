@@ -1,33 +1,82 @@
 <template>
   <div class="user">
-    <div class="search">
-      <UForm :formOptions="searchFormConfig"></UForm>
+    <page-search :searchFormConfig="searchFormConfig"></page-search>
+    <div class="content">
+      <u-table :propList="propList" :listData="userList">
+        <template #enable="scope">
+          {{ scope.row.enable ? '可用' : '禁用' }}
+        </template>
+        <template #avatar="scope">
+          <el-image
+            class="image-slot"
+            fit="cover"
+            :src="scope.row.avatar"
+            :preview-src-list="[scope.row.avatar]"
+            :preview-teleported="true"
+          ></el-image>
+        </template>
+      </u-table>
     </div>
-    <div class="content"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import UForm from '@/base-ui/form'
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
+import PageSearch from '@/components/page-search'
+import UTable from '@/base-ui/table'
 // 数据
 import { searchFormConfig } from './config/search.config'
 export default defineComponent({
-  name: 'user',
+  name: 'User',
   components: {
-    UForm
+    PageSearch,
+    UTable
   },
   setup() {
+    const store = useStore()
+    const userList = computed(() => store.state.system.userList)
+    store.dispatch('system/getPageListAction', {
+      url: '/api/user/query',
+      queryInfo: {
+        offset: 0,
+        size: 10
+      }
+    })
+    const propList: any[] = [
+      { prop: 'id', label: '编号', minWidth: '100' },
+      { prop: 'name', label: '用户名', minWidth: '100' },
+      { prop: 'avatar', label: '头像', minWidth: '200', slotName: 'avatar' },
+      {
+        prop: 'enable',
+        label: '是否可用',
+        minWidth: '100',
+        slotName: 'enable'
+      },
+      {
+        prop: 'createTime',
+        label: '创建时间',
+        minWidth: '250'
+        // slotName: 'createTime'
+      }
+    ]
+
     return {
-      searchFormConfig
+      searchFormConfig,
+      userList,
+      propList
     }
   }
 })
 </script>
 
 <style lang="less" scoped>
-.search {
-}
 .content {
+  padding: 20px;
+  border-top: 20px solid #f5f5f5;
+}
+.image-slot {
+  width: 50px;
+  height: 50px;
 }
 </style>

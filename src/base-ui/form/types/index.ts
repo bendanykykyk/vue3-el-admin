@@ -9,11 +9,13 @@ export interface IFormItem {
   typeData?: any
   // 针对特殊的属性,可以理解为原本有什么就可以用什么
   props?: any
+  key: string
 }
 
 export interface IForm {
   formItems: IFormItem[]
+  formLayout?: any
   labelWidth?: string
   colLayout: any // span 的值
-  itemLayout: any
+  itemLayout?: any
 }

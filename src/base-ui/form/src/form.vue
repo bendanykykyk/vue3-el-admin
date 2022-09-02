@@ -1,15 +1,17 @@
 <template>
   <div class="u-form">
-    <el-form :label-width="formOptions.labelWidth || '120px'">
+    <!-- 头部插槽 -->
+    <div class="header">
+      <slot name="header"></slot>
+    </div>
+    <el-form :label-width="labelWidth">
       <el-row>
-        <template
-          v-for="formItem in formOptions.formItems"
-          :key="formItem.label"
-        >
-          <el-col v-bind="formOptions.colLayout">
+        <template v-for="formItem in formItems" :key="formItem.label">
+          <el-col v-bind="colLayout">
             <el-form-item
               :label="formItem.label + ':'"
-              :style="formOptions.itemLayout"
+              :rules="formItem.rules"
+              :style="itemStyle"
             >
               <template
                 v-if="formItem.type === 'input' || formItem.type === 'password'"
@@ -18,13 +20,15 @@
                   :placeholder="placeholderComputed(formItem.label, false)"
                   v-bind="formItem.props"
                   :show-password="formItem.type === 'password'"
+                  v-model="formData[`${formItem.key}`]"
                 ></el-input>
               </template>
               <template v-else-if="formItem.type === 'select'">
                 <el-select
-                  :placeholder="placeholderComputed(formItem.label, false)"
+                  :placeholder="placeholderComputed(formItem.label, true)"
                   v-bind="formItem.props"
                   style="width: 100%"
+                  v-model="formData[`${formItem.key}`]"
                 >
                   <el-option
                     v-for="item in typeDataComputed(formItem.typeData)"
@@ -36,6 +40,7 @@
               </template>
               <template v-else-if="formItem.type === 'datepicker'">
                 <el-date-picker
+                  v-model="formData[`${formItem.key}`]"
                   style="width: 100%"
                   v-bind="formItem.props"
                 ></el-date-picker>
@@ -43,33 +48,55 @@
             </el-form-item>
           </el-col>
         </template>
-        <!-- <el-col :span="8">
-          <el-form-item label="姓名">
-            <el-input></el-input>
-          </el-form-item>
-        </el-col> -->
       </el-row>
     </el-form>
+
+    <div class="footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import type { IForm } from '../types'
+import { defineComponent, PropType, computed, ref, watch } from 'vue'
+import type { IFormItem } from '../types'
+
 export default defineComponent({
-  name: 'form',
+  name: 'UForm',
   props: {
-    formOptions: {
-      type: Object as PropType<IForm>,
-      default() {
-        return {}
-      }
+    modelValue: {
+      type: Object,
+      required: true
+    },
+    formItems: {
+      type: Array as PropType<IFormItem[]>,
+      // 这样会出问题
+      // default() {
+      //   return []
+      // }
+      default: () => []
+    },
+    labelWidth: {
+      type: String,
+      default: '100px'
+    },
+    colLayout: {
+      type: Object,
+      default: () => ({
+        xl: 6, // >1920px 4个
+        lg: 8,
+        md: 12,
+        sm: 24,
+        xs: 24
+      })
+    },
+    itemStyle: {
+      type: Object,
+      default: () => ({ padding: '10px 40px' })
     }
   },
-  //import引入的组件需要注入到对象中才能使用
-  components: {},
-  //这里存放数据
-  setup() {
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     let placeholderComputed = computed(() => {
       /**
        * @description:
@@ -78,11 +105,7 @@ export default defineComponent({
        * @return {*} 返回拼接好的文字
        */
       return function (str: string, isSelect = false) {
-        if (isSelect) {
-          return `请选择${str}`
-        } else {
-          return `请输入${str}`
-        }
+        return isSelect ? `请选择${str}` : `请输入${str}`
       }
     })
 
@@ -95,7 +118,27 @@ export default defineComponent({
         }
       }
     })
+    // eslint-disable-next-line vue/no-parsing-error
+    // 这种处理props值 是stackoverflow里面不错的解决方法，但是其实这里set没用 || 这里和直接绑定props其实差不多
+    // let formData = computed({
+    //   get: () => {
+    //     return props.modelValue
+    //   },
+    //   set: (newVal) => {
+    //     emit('update:modelValue', newVal)
+    //   }
+    // })
+
+    const formData = ref({ ...props.modelValue })
+    watch(
+      formData,
+      (newVal) => {
+        emit('update:modelValue', newVal)
+      },
+      { deep: true }
+    )
     return {
+      formData,
       placeholderComputed,
       typeDataComputed
     }
@@ -105,7 +148,6 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .u-form {
-  // padding-top: 22px;
   padding: 22px 5px 0px 5px;
 }
 </style>

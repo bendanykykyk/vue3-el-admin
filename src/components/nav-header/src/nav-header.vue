@@ -22,7 +22,7 @@
 import { defineComponent, ref, computed } from 'vue'
 
 import UserInfo from './user-info.vue'
-import UBreadcrumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
+import UBreadcrumb from '@/base-ui/breadcrumb'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { pathMapBreadcrumbs } from '@/utils/map-menus'

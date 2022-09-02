@@ -15,7 +15,7 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
     const route = require('../router/main' + path.split('.')[1])
     allRoutes.push(route.default)
   })
-
+  console.log(allRoutes)
   // 2. 根据后端返回的菜单去获取需要添加的routes
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
