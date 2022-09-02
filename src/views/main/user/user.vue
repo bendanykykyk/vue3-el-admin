@@ -1,10 +1,19 @@
 <template>
   <div class="user">
-    <page-search :searchFormConfig="searchFormConfig"></page-search>
+    <page-search
+      :searchFormConfig="searchFormConfig"
+      @search="onSearch"
+    ></page-search>
     <div class="content">
       <u-table :propList="propList" :listData="userList">
         <template #enable="scope">
-          {{ scope.row.enable ? '可用' : '禁用' }}
+          <el-button
+            plain
+            size="mini"
+            :type="scope.row.enable ? 'success' : 'danger'"
+          >
+            {{ scope.row.enable ? '可用' : '禁用' }}
+          </el-button>
         </template>
         <template #avatar="scope">
           <el-image
@@ -15,6 +24,9 @@
             :preview-teleported="true"
           ></el-image>
         </template>
+        <!-- <template #createTime="scope">
+          {{ $filters.formatTime(scope.row.createTime) }}
+        </template> -->
       </u-table>
     </div>
   </div>
@@ -61,10 +73,15 @@ export default defineComponent({
       }
     ]
 
+    const onSearch = (formData: any) => {
+      console.log(formData)
+    }
+
     return {
       searchFormConfig,
       userList,
-      propList
+      propList,
+      onSearch
     }
   }
 })

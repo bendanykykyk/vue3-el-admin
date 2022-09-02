@@ -7,6 +7,8 @@ import ElementPlus from 'element-plus'
 
 import 'element-plus/dist/index.css'
 
+// 全局注册
+import { globalRegister } from './global'
 // 引入基础css,以及自己定义的基础样式
 import 'normalize.css'
 import './assets/css/index.less'
@@ -15,6 +17,7 @@ import './assets/css/index.less'
 import * as ElIcons from '@element-plus/icons-vue'
 
 const app = createApp(App)
+app.use(globalRegister)
 app.use(ElementPlus)
 app.use(store)
 
