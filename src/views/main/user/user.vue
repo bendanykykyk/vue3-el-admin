@@ -9,7 +9,7 @@
         <template #enable="scope">
           <el-button
             plain
-            size="mini"
+            size="small"
             :type="scope.row.enable ? 'success' : 'danger'"
           >
             {{ scope.row.enable ? '可用' : '禁用' }}
@@ -33,12 +33,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, inject } from 'vue'
 import { useStore } from 'vuex'
 import PageSearch from '@/components/page-search'
 import UTable from '@/base-ui/table'
 // 数据
 import { searchFormConfig } from './config/search.config'
+// 常量名字
+import { GLOBAL_FILTER_UTC_TIME } from '@/global/const'
 export default defineComponent({
   name: 'User',
   components: {
@@ -46,6 +48,8 @@ export default defineComponent({
     UTable
   },
   setup() {
+    const filterTime: any = inject(GLOBAL_FILTER_UTC_TIME)
+    console.log(filterTime('2020-08-12 23:23:59'))
     const store = useStore()
     const userList = computed(() => store.state.system.userList)
     store.dispatch('system/getPageListAction', {
