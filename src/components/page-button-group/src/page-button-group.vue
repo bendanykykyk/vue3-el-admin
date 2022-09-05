@@ -1,10 +1,10 @@
 <template>
   <div class="page-button-group-container">
-    <el-button type="primary" plain @click="$emit('handleClick', 'create')"
+    <el-button type="primary" @click="$emit('handleClick', 'create')"
       >新建</el-button
     >
     <el-dropdown>
-      <el-button type="primary" plain>
+      <el-button type="primary">
         其他操作<el-icon class="el-icon--right"><arrow-down /></el-icon>
       </el-button>
       <template #dropdown>

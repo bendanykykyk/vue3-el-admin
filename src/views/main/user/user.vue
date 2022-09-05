@@ -18,6 +18,19 @@
             @handle-click="handleButtonGroupClick"
           ></page-button-group>
         </template>
+        <template #footer>
+          <el-pagination
+            v-model:currentPage="currentPage1"
+            :page-size="10"
+            :small="small"
+            :disabled="disabled"
+            :background="background"
+            layout="total, prev, pager, next"
+            :total="200"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </template>
         <template #enable="scope">
           <el-button
             plain
@@ -37,8 +50,8 @@
           ></el-image>
         </template>
         <template #handler="scope">
-          <el-button link type="primary" size="small">Detail</el-button>
-          <el-button link type="primary" size="small">Edit</el-button>
+          <el-button link type="primary" size="small" plain>Detail</el-button>
+          <el-button link type="primary" size="small" plain>Edit</el-button>
         </template>
         <!-- <template #createTime="scope">
           {{ $filters.formatTime(scope.row.createTime) }}
@@ -49,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, inject } from 'vue'
+import { defineComponent, computed, inject, ref } from 'vue'
 import { useStore } from 'vuex'
 import PageSearch from '@/components/page-search'
 import UTable from '@/base-ui/table'
@@ -93,7 +106,7 @@ export default defineComponent({
         minWidth: '250'
         // slotName: 'createTime'
       },
-      { label: '操作', minWidth: '120', slotName: 'handler', fixed: 'right' }
+      { label: '操作', minWidth: '150', slotName: 'handler', fixed: 'right' }
     ]
 
     const onSearch = (formData: any) => {
@@ -102,11 +115,25 @@ export default defineComponent({
     const title = '用户列表'
     const isColumnIndexShow = true
     const isColumnSelectorShow = true
+
     const handleSelectionChange = (val: any) => {
       console.log(val)
     }
     const handleButtonGroupClick = (operationName: string) => {
       console.log(operationName)
+    }
+
+    const currentPage1 = ref(5)
+
+    const small = ref(false)
+    const background = ref(false)
+    const disabled = ref(false)
+
+    const handleSizeChange = (val: number) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val: number) => {
+      console.log(`current page: ${val}`)
     }
     return {
       title,
@@ -117,7 +144,13 @@ export default defineComponent({
       isColumnIndexShow,
       isColumnSelectorShow,
       handleSelectionChange,
-      handleButtonGroupClick
+      handleButtonGroupClick,
+      currentPage1,
+      small,
+      background,
+      disabled,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })
@@ -131,5 +164,12 @@ export default defineComponent({
 .image-slot {
   width: 50px;
   height: 50px;
+}
+
+.demo-pagination-block + .demo-pagination-block {
+  margin-top: 10px;
+}
+.demo-pagination-block .demonstration {
+  margin-bottom: 16px;
 }
 </style>
