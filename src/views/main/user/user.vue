@@ -5,7 +5,13 @@
       @search="onSearch"
     ></page-search>
     <div class="content">
-      <u-table :propList="propList" :listData="userList">
+      <u-table
+        :propList="propList"
+        :listData="userList"
+        :isColumnIndexShow="isColumnIndexShow"
+        :isColumnSelectorShow="isColumnSelectorShow"
+        @selection-change="handleSelectionChange"
+      >
         <template #enable="scope">
           <el-button
             plain
@@ -64,7 +70,7 @@ export default defineComponent({
       }
     })
     const propList: any[] = [
-      { prop: 'id', label: '编号', minWidth: '100' },
+      // { prop: 'id', label: '编号', minWidth: '100' },
       { prop: 'name', label: '用户名', minWidth: '100' },
       { prop: 'avatar', label: '头像', minWidth: '200', slotName: 'avatar' },
       {
@@ -86,11 +92,19 @@ export default defineComponent({
       console.log(formData)
     }
 
+    const isColumnIndexShow = true
+    const isColumnSelectorShow = true
+    const handleSelectionChange = (val: any) => {
+      console.log(val)
+    }
     return {
       searchFormConfig,
       userList,
       propList,
-      onSearch
+      onSearch,
+      isColumnIndexShow,
+      isColumnSelectorShow,
+      handleSelectionChange
     }
   }
 })

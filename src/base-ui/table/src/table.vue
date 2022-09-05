@@ -1,6 +1,20 @@
 <template>
   <div class="u-table">
-    <el-table :data="listData" border style="width: 100%">
+    <el-table :data="listData" border style="width: 100%" v-bind="$attrs">
+      <el-table-column
+        type="selection"
+        width="60"
+        v-if="isColumnSelectorShow"
+        align="center"
+      />
+      <el-table-column
+        type="index"
+        width="80"
+        v-if="isColumnIndexShow"
+        label="序号"
+        align="center"
+      >
+      </el-table-column>
       <el-table-column
         v-for="propItem in propList"
         :key="propItem.prop"
@@ -30,6 +44,12 @@ export default defineComponent({
     listData: {
       type: Array,
       required: true
+    },
+    isColumnIndexShow: {
+      type: Boolean
+    },
+    isColumnSelectorShow: {
+      type: Boolean
     }
   },
   setup(props, { emit }) {
