@@ -6,12 +6,18 @@
     ></page-search>
     <div class="content">
       <u-table
+        :title="title"
         :propList="propList"
         :listData="userList"
         :isColumnIndexShow="isColumnIndexShow"
         :isColumnSelectorShow="isColumnSelectorShow"
         @selection-change="handleSelectionChange"
       >
+        <template #operations>
+          <page-button-group
+            @handle-click="handleButtonGroupClick"
+          ></page-button-group>
+        </template>
         <template #enable="scope">
           <el-button
             plain
@@ -51,11 +57,13 @@ import UTable from '@/base-ui/table'
 import { searchFormConfig } from './config/search.config'
 // 常量名字
 import { GLOBAL_FILTER_UTC_TIME } from '@/global/const'
+import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
 export default defineComponent({
   name: 'User',
   components: {
     PageSearch,
-    UTable
+    UTable,
+    PageButtonGroup
   },
   setup() {
     const filterTime: any = inject(GLOBAL_FILTER_UTC_TIME)
@@ -91,20 +99,25 @@ export default defineComponent({
     const onSearch = (formData: any) => {
       console.log(formData)
     }
-
+    const title = '用户列表'
     const isColumnIndexShow = true
     const isColumnSelectorShow = true
     const handleSelectionChange = (val: any) => {
       console.log(val)
     }
+    const handleButtonGroupClick = (operationName: string) => {
+      console.log(operationName)
+    }
     return {
+      title,
       searchFormConfig,
       userList,
       propList,
       onSearch,
       isColumnIndexShow,
       isColumnSelectorShow,
-      handleSelectionChange
+      handleSelectionChange,
+      handleButtonGroupClick
     }
   }
 })

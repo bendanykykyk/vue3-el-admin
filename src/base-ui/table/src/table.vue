@@ -1,5 +1,13 @@
 <template>
   <div class="u-table">
+    <div class="header-container">
+      <div class="title">
+        <slot name="title">{{ title }}</slot>
+      </div>
+      <div class="operations">
+        <slot name="operations"></slot>
+      </div>
+    </div>
     <el-table :data="listData" border style="width: 100%" v-bind="$attrs">
       <el-table-column
         type="selection"
@@ -37,6 +45,10 @@ import { defineComponent, PropType } from 'vue'
 export default defineComponent({
   name: 'UTable',
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     propList: {
       type: Array as PropType<any[]>,
       required: true
@@ -58,4 +70,14 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+</style>
