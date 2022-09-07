@@ -66,7 +66,10 @@ export default defineComponent({
     },
     propList: {
       type: Array as PropType<any[]>,
-      required: true
+      default() {
+        return []
+      }
+      // required: true
     },
     listData: {
       type: Array,

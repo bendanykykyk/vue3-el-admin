@@ -11,7 +11,9 @@ const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state: {
     userList: [],
-    userCount: 0
+    userCount: 0,
+    merchantList: [],
+    merchantCount: 0
   },
   mutations: {
     changeUserList(state, userList: any[]) {
@@ -19,15 +21,27 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeUserCount(state, userCount: number) {
       state.userCount = userCount
+    },
+    changeMerchantList(state, merchantList: any[]) {
+      state.merchantList = merchantList
+    },
+    changeMerchantCount(state, merchantCount: number) {
+      state.merchantCount = merchantCount
     }
   },
   actions: {
     async getPageListAction({ commit }, payload: IPageListParams) {
+      const pageName = payload.pageName
+      const url = `/api/${pageName}/query`
       const {
         data: { list, totalCount }
-      } = await getPageListData(payload.url, payload.queryInfo)
-      commit('changeUserList', list)
-      commit('changeUserCount', totalCount)
+      } = await getPageListData(url, payload.queryInfo)
+
+      const changePageName =
+        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+
+      commit(`change${changePageName}List`, list)
+      commit(`change${changePageName}Count`, totalCount)
     }
   },
   modules: {}

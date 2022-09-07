@@ -1,4 +1,5 @@
 export interface IPageListParams {
-  url: string
+  url?: string
+  pageName: string
   queryInfo: any
 }
