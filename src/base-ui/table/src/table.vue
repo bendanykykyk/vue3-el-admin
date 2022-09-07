@@ -37,13 +37,25 @@
       </el-table-column>
     </el-table>
     <div class="footer-container">
-      <slot name="footer"></slot>
+      <slot name="footer">
+        <el-pagination
+          v-model:currentPage="currentPage1"
+          :page-size="10"
+          :small="small"
+          :disabled="disabled"
+          :background="background"
+          layout="total, prev, pager, next"
+          :total="200"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 
 export default defineComponent({
   name: 'UTable',
@@ -68,7 +80,26 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    return {}
+    const currentPage1 = ref(5)
+
+    const small = ref(false)
+    const background = ref(false)
+    const disabled = ref(false)
+
+    const handleSizeChange = (val: number) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val: number) => {
+      console.log(`current page: ${val}`)
+    }
+    return {
+      currentPage1,
+      small,
+      background,
+      disabled,
+      handleSizeChange,
+      handleCurrentChange
+    }
   }
 })
 </script>

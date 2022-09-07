@@ -6,11 +6,8 @@
     ></page-search>
     <div class="content">
       <u-table
-        :title="title"
-        :propList="propList"
-        :listData="userList"
-        :isColumnIndexShow="isColumnIndexShow"
-        :isColumnSelectorShow="isColumnSelectorShow"
+        :list-data="userList"
+        v-bind="contentTableConfig"
         @selection-change="handleSelectionChange"
       >
         <template #operations>
@@ -18,7 +15,7 @@
             @handle-click="handleButtonGroupClick"
           ></page-button-group>
         </template>
-        <template #footer>
+        <!-- <template #footer>
           <el-pagination
             v-model:currentPage="currentPage1"
             :page-size="10"
@@ -30,7 +27,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-        </template>
+        </template> -->
         <template #enable="scope">
           <el-button
             plain
@@ -68,6 +65,7 @@ import PageSearch from '@/components/page-search'
 import UTable from '@/base-ui/table'
 // 数据
 import { searchFormConfig } from './config/search.config'
+import { contentTableConfig } from './config/content.config'
 // 常量名字
 import { GLOBAL_FILTER_UTC_TIME } from '@/global/const'
 import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
@@ -90,32 +88,10 @@ export default defineComponent({
         size: 10
       }
     })
-    const propList: any[] = [
-      // { prop: 'id', label: '编号', minWidth: '100' },
-      { prop: 'name', label: '用户名', minWidth: '100' },
-      { prop: 'avatar', label: '头像', minWidth: '200', slotName: 'avatar' },
-      {
-        prop: 'enable',
-        label: '是否可用',
-        minWidth: '100',
-        slotName: 'enable'
-      },
-      {
-        prop: 'createTime',
-        label: '创建时间',
-        minWidth: '250'
-        // slotName: 'createTime'
-      },
-      { label: '操作', minWidth: '150', slotName: 'handler', fixed: 'right' }
-    ]
 
     const onSearch = (formData: any) => {
       console.log(formData)
     }
-    const title = '用户列表'
-    const isColumnIndexShow = true
-    const isColumnSelectorShow = true
-
     const handleSelectionChange = (val: any) => {
       console.log(val)
     }
@@ -123,34 +99,15 @@ export default defineComponent({
       console.log(operationName)
     }
 
-    const currentPage1 = ref(5)
-
-    const small = ref(false)
-    const background = ref(false)
-    const disabled = ref(false)
-
-    const handleSizeChange = (val: number) => {
-      console.log(`${val} items per page`)
-    }
-    const handleCurrentChange = (val: number) => {
-      console.log(`current page: ${val}`)
-    }
     return {
-      title,
+      contentTableConfig,
       searchFormConfig,
       userList,
-      propList,
+
       onSearch,
-      isColumnIndexShow,
-      isColumnSelectorShow,
+
       handleSelectionChange,
-      handleButtonGroupClick,
-      currentPage1,
-      small,
-      background,
-      disabled,
-      handleSizeChange,
-      handleCurrentChange
+      handleButtonGroupClick
     }
   }
 })

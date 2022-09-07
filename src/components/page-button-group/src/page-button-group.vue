@@ -9,15 +9,15 @@
       </el-button>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item @click="$emit('handleClick', 'upload')"
-            >上传</el-dropdown-item
-          >
-          <el-dropdown-item @click="$emit('handleClick', 'download')"
-            >下载</el-dropdown-item
-          >
-          <el-dropdown-item @click="$emit('handleClick', 'delete')"
-            >删除</el-dropdown-item
-          >
+          <el-dropdown-item @click="$emit('handleClick', 'upload')">
+            上传
+          </el-dropdown-item>
+          <el-dropdown-item @click="$emit('handleClick', 'download')">
+            下载
+          </el-dropdown-item>
+          <el-dropdown-item @click="$emit('handleClick', 'delete')">
+            删除
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
