@@ -47,12 +47,18 @@ export default defineComponent({
     //   createTime: ''
     // })
     const formData = ref(formOriginData)
+
     const onSearch = () => {
       context.emit('search', formData.value)
     }
 
     const onReset = () => {
-      formData.value = { ...formOriginData }
+      // 方式一：由于form组件内部...props.modelValue是浅拷贝，直接更改formData.value影响不到内部的值
+      // 但是formData.value[item.key]的方式是可以的
+      for (const item of formItems) {
+        formData.value[item.key] = formOriginData[item.key]
+      }
+      // formData.value = { ...formOriginData }
     }
 
     return {
