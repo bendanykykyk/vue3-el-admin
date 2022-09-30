@@ -16,11 +16,15 @@
               <template
                 v-if="formItem.type === 'input' || formItem.type === 'password'"
               >
+                <!-- v-model="formData[`${formItem.key}`]" -->
                 <el-input
                   :placeholder="placeholderComputed(formItem.label, false)"
                   v-bind="formItem.props"
                   :show-password="formItem.type === 'password'"
-                  v-model="formData[`${formItem.key}`]"
+                  :model-value="modelValue[formItem.key]"
+                  @update:modelValue="
+                    handleUpdateModelValue($event, formItem.key)
+                  "
                 ></el-input>
               </template>
               <template v-else-if="formItem.type === 'select'">
@@ -28,7 +32,10 @@
                   :placeholder="placeholderComputed(formItem.label, true)"
                   v-bind="formItem.props"
                   style="width: 100%"
-                  v-model="formData[`${formItem.key}`]"
+                  :model-value="modelValue[formItem.key]"
+                  @update:modelValue="
+                    handleUpdateModelValue($event, formItem.key)
+                  "
                 >
                   <el-option
                     v-for="item in typeDataComputed(formItem.typeData)"
@@ -40,9 +47,12 @@
               </template>
               <template v-else-if="formItem.type === 'datepicker'">
                 <el-date-picker
-                  v-model="formData[`${formItem.key}`]"
                   style="width: 100%"
+                  :model-value="modelValue[formItem.key]"
                   v-bind="formItem.props"
+                  @update:modelValue="
+                    handleUpdateModelValue($event, formItem.key)
+                  "
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -58,6 +68,7 @@
 </template>
 
 <script lang="ts">
+import { isContext } from 'vm'
 import { defineComponent, PropType, computed, ref, watch } from 'vue'
 import type { IFormItem } from '../types'
 
@@ -129,18 +140,23 @@ export default defineComponent({
     //   }
     // })
 
-    const formData = ref({ ...props.modelValue })
-    watch(
-      formData,
-      (newVal) => {
-        emit('update:modelValue', newVal)
-      },
-      { deep: true }
-    )
+    // const formData = ref({ ...props.modelValue })
+    // watch(
+    //   formData,
+    //   (newVal) => {
+    //     emit('update:modelValue', newVal)
+    //   },
+    //   { deep: true }
+    // )
+    const handleUpdateModelValue = (e: any, key: string) => {
+      console.log(e, key)
+      emit('update:modelValue', { ...props.modelValue, [key]: e })
+    }
     return {
-      formData,
+      // formData,
       placeholderComputed,
-      typeDataComputed
+      typeDataComputed,
+      handleUpdateModelValue
     }
   }
 })
