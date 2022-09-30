@@ -3,7 +3,9 @@
     <u-form v-bind="searchFormConfig" v-model="formData">
       <template v-slot:footer>
         <div class="btn-groups">
-          <el-button type="primary" icon="Refresh">重置</el-button>
+          <el-button type="primary" icon="Refresh" @click="onReset"
+            >重置</el-button
+          >
           <el-button type="primary" icon="Search" @click="onSearch"
             >查询</el-button
           >
@@ -29,20 +31,34 @@ export default defineComponent({
   },
   emits: ['search', 'reset'],
   setup(props, context) {
-    const formData = ref({
-      id: '',
-      username: '',
-      password: '',
-      hobby: '',
-      createTime: ''
-    })
+    // 优化，这里的项应该由配置项去生成的
+    const formItems = props.searchFormConfig?.formItems ?? []
+    let formOriginData = {}
+    for (const item of formItems) {
+      formOriginData[item.key] = ''
+    }
+    console.log(formOriginData)
+
+    // const formData = ref({
+    //   id: '',
+    //   username: '',
+    //   password: '',
+    //   hobby: '',
+    //   createTime: ''
+    // })
+    const formData = ref(formOriginData)
     const onSearch = () => {
       context.emit('search', formData.value)
     }
 
+    const onReset = () => {
+      formData.value = { ...formOriginData }
+    }
+
     return {
       formData,
-      onSearch
+      onSearch,
+      onReset
     }
   }
 })

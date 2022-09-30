@@ -56,7 +56,7 @@ import { defineComponent, computed } from 'vue'
 import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
 import UTable from '@/base-ui/table'
 import { useStore } from 'vuex'
-import { constants } from 'zlib'
+
 export default defineComponent({
   name: 'page-content',
   components: {
@@ -75,7 +75,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-
     const dataList = computed(() => store.state.system[props.pageName + 'List'])
     store.dispatch('system/getPageListAction', {
       // url: '/api/user/query',

@@ -8,7 +8,8 @@
       <page-content
         :contentTableConfig="contentTableConfig"
         pageName="merchant"
-      ></page-content>
+      >
+      </page-content>
     </div>
   </div>
 </template>
@@ -39,6 +40,7 @@ export default defineComponent({
     const onSearch = (formData: any) => {
       console.log(formData)
     }
+
     return {
       contentTableConfig,
       searchFormConfig,
