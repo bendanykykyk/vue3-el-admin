@@ -3,12 +3,12 @@
     <u-form v-bind="searchFormConfig" v-model="formData">
       <template v-slot:footer>
         <div class="btn-groups">
-          <el-button type="primary" icon="Refresh" @click="onReset"
-            >重置</el-button
-          >
-          <el-button type="primary" icon="Search" @click="onSearch"
-            >查询</el-button
-          >
+          <el-button type="primary" icon="Refresh" @click="onReset">
+            重置
+          </el-button>
+          <el-button type="primary" icon="Search" @click="onSearch">
+            查询
+          </el-button>
         </div>
       </template>
     </u-form>
