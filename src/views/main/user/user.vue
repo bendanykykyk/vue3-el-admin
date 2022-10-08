@@ -3,9 +3,11 @@
     <page-search
       :searchFormConfig="searchFormConfig"
       @search="onSearch"
+      @reset="onReset"
     ></page-search>
     <div class="content">
       <page-content
+        ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
         pageName="merchant"
       >
@@ -25,7 +27,9 @@ import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 // 常量名字
 import { GLOBAL_FILTER_UTC_TIME } from '@/global/const'
-// import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
+
+// hook
+import { usePageSearch } from '@/hooks/usePageSearch'
 export default defineComponent({
   name: 'User',
   components: {
@@ -37,14 +41,15 @@ export default defineComponent({
   setup() {
     const filterTime: any = inject(GLOBAL_FILTER_UTC_TIME)
     console.log(filterTime('2020-08-12 23:23:59'))
-    const onSearch = (formData: any) => {
-      console.log(formData)
-    }
+
+    const [onSearch, onReset, pageContentRef] = usePageSearch()
 
     return {
       contentTableConfig,
       searchFormConfig,
-      onSearch
+      onSearch,
+      onReset,
+      pageContentRef
     }
   }
 })

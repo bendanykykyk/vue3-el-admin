@@ -31,7 +31,7 @@ class URequest {
     this.instance.interceptors.request.use(
       (config) => {
         // console.log('所有实例都有的拦截器请求')
-
+        console.log(config.data)
         if (this.showLoading) {
           this.loadingInstance = ElLoading.service({
             lock: true,

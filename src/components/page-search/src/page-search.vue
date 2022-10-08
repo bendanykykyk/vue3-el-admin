@@ -17,7 +17,6 @@
 <script>
 import UForm from '@/base-ui/form'
 import { defineComponent, ref } from 'vue'
-
 export default defineComponent({
   name: 'page-search',
   components: {
@@ -61,6 +60,7 @@ export default defineComponent({
 
       // 方式二
       formData.value = { ...formOriginData }
+      context.emit('reset')
     }
 
     return {

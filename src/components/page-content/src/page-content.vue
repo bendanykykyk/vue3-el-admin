@@ -1,9 +1,13 @@
 <template>
   <div class="page-content-container">
     <u-table
+      v-model:pageInfo="pageInfo"
       :list-data="dataList"
+      :list-count="dataCount"
       v-bind="contentTableConfig"
       @selection-change="handleSelectionChange"
+      @handle-size-change="handleSizeChange"
+      @handle-current-change="handleCurrentChange"
     >
       <template #operations>
         <page-button-group @handle-click="handleButtonGroupClick">
@@ -52,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
 import UTable from '@/base-ui/table'
 import { useStore } from 'vuex'
@@ -76,17 +80,34 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     const dataList = computed(() => store.state.system[props.pageName + 'List'])
-    store.dispatch('system/getPageListAction', {
-      // url: '/api/user/query',
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    const dataCount = computed(() =>
+      store.getters['system/pageListCount'](props.pageName)
+    )
+
+    const pageInfo = ref({ pageSize: 10, currentPage: 0 })
+    watch(pageInfo, () => getPageData())
+    const getPageData = (queryInfo: any = {}) => {
+      console.log('请求接口')
+      store.dispatch('system/getPageListAction', {
+        // url: '/api/user/query',
+        pageName: props.pageName,
+        queryInfo: {
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          ...queryInfo
+        }
+      })
+    }
+    getPageData()
 
     const handleSelectionChange = (val: any) => {
       console.log(val)
+    }
+    const handleCurrentChange = (val: number) => {
+      pageInfo.value.currentPage = val
+    }
+    const handleSizeChange = (val: number) => {
+      pageInfo.value.pageSize = val
     }
     const handleButtonGroupClick = (operationName: string) => {
       console.log(operationName)
@@ -96,7 +117,12 @@ export default defineComponent({
       // userList,
       dataList,
       handleSelectionChange,
-      handleButtonGroupClick
+      handleButtonGroupClick,
+      getPageData,
+      dataCount,
+      pageInfo,
+      handleCurrentChange,
+      handleSizeChange
     }
   }
 })

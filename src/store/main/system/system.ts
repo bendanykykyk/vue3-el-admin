@@ -29,6 +29,13 @@ const systemModule: Module<ISystemState, IRootState> = {
       state.merchantCount = merchantCount
     }
   },
+  getters: {
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
+      }
+    }
+  },
   actions: {
     async getPageListAction({ commit }, payload: IPageListParams) {
       const pageName = payload.pageName

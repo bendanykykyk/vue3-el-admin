@@ -39,13 +39,14 @@
     <div class="footer-container">
       <slot name="footer">
         <el-pagination
-          v-model:currentPage="currentPage1"
-          :page-size="10"
+          :currentPage="pageInfo.currentPage"
+          :page-size="pageInfo.currentPageSize"
+          :page-sizes="[10, 20, 50, 100]"
           :small="small"
           :disabled="disabled"
           :background="background"
-          layout="total, prev, pager, next"
-          :total="200"
+          layout="total,sizes, prev, pager, next"
+          :total="listCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -75,28 +76,33 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
     isColumnIndexShow: {
       type: Boolean
     },
     isColumnSelectorShow: {
       type: Boolean
+    },
+    pageInfo: {
+      type: Object,
+      default: () => ({ pageSize: 10, currentPage: 0 })
     }
   },
   setup(props, { emit }) {
-    const currentPage1 = ref(5)
-
     const small = ref(false)
     const background = ref(false)
     const disabled = ref(false)
 
     const handleSizeChange = (val: number) => {
-      console.log(`${val} items per page`)
+      emit('handleSizeChange', val)
     }
     const handleCurrentChange = (val: number) => {
-      console.log(`current page: ${val}`)
+      emit('handleCurrentChange', val)
     }
     return {
-      currentPage1,
       small,
       background,
       disabled,
