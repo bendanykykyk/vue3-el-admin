@@ -19,6 +19,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-var-requires': 'off', // any类型校验关闭
     '@typescript-eslint/no-explicit-any': 'off' // any类型校验关闭
+    // '@typescript-eslint/explicit-module-boundary-types': 'off'
     // 'vue/no-mutating-props': 'off'
     // noImplicitAny: false
   }

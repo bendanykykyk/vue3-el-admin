@@ -88,19 +88,20 @@ export default defineComponent({
     },
     pageInfo: {
       type: Object,
-      default: () => ({ pageSize: 10, currentPage: 0 })
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
+  emits: ['handleSizeChange', 'handleCurrentChange'],
   setup(props, { emit }) {
     const small = ref(false)
     const background = ref(false)
     const disabled = ref(false)
 
-    const handleSizeChange = (val: number) => {
-      emit('handleSizeChange', val)
+    const handleSizeChange = (pageSize: number) => {
+      emit('handleSizeChange', pageSize)
     }
-    const handleCurrentChange = (val: number) => {
-      emit('handleCurrentChange', val)
+    const handleCurrentChange = (currentPage: number) => {
+      emit('handleCurrentChange', currentPage)
     }
     return {
       small,

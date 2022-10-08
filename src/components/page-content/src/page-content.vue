@@ -1,13 +1,13 @@
 <template>
   <div class="page-content-container">
     <u-table
+      v-bind="contentTableConfig"
       v-model:pageInfo="pageInfo"
       :list-data="dataList"
       :list-count="dataCount"
-      v-bind="contentTableConfig"
       @selection-change="handleSelectionChange"
-      @handle-size-change="handleSizeChange"
-      @handle-current-change="handleCurrentChange"
+      @handleSizeChange="handleSizeChange"
+      @handleCurrentChange="handleCurrentChange"
     >
       <template #operations>
         <page-button-group @handle-click="handleButtonGroupClick">
@@ -103,12 +103,13 @@ export default defineComponent({
     const handleSelectionChange = (val: any) => {
       console.log(val)
     }
-    const handleCurrentChange = (val: number) => {
-      pageInfo.value.currentPage = val
+    const handleSizeChange = (pageSize: number) => {
+      pageInfo.value.pageSize = pageSize
     }
-    const handleSizeChange = (val: number) => {
-      pageInfo.value.pageSize = val
+    const handleCurrentChange = (currentPage: number) => {
+      pageInfo.value.currentPage = currentPage
     }
+
     const handleButtonGroupClick = (operationName: string) => {
       console.log(operationName)
     }
@@ -121,8 +122,8 @@ export default defineComponent({
       getPageData,
       dataCount,
       pageInfo,
-      handleCurrentChange,
-      handleSizeChange
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })
