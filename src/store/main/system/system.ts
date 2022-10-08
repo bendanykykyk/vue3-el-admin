@@ -13,7 +13,9 @@ const systemModule: Module<ISystemState, IRootState> = {
     userList: [],
     userCount: 0,
     merchantList: [],
-    merchantCount: 0
+    merchantCount: 0,
+    productList: [],
+    productCount: 0
   },
   mutations: {
     changeUserList(state, userList: any[]) {
@@ -27,6 +29,12 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeMerchantCount(state, merchantCount: number) {
       state.merchantCount = merchantCount
+    },
+    changeProductList(state, productList: any[]) {
+      state.productList = productList
+    },
+    changeProductCount(state, productCount: number) {
+      state.productCount = productCount
     }
   },
   getters: {

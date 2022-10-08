@@ -35,6 +35,11 @@
           {{ scope.row.enable ? '可用' : '禁用' }}
         </el-button>
       </template>
+
+      <template #handler="scope">
+        <el-button link type="primary" size="small" plain>Detail</el-button>
+        <el-button link type="primary" size="small" plain>Edit</el-button>
+      </template>
       <template #avatar="scope">
         <el-image
           class="image-slot"
@@ -42,11 +47,20 @@
           :src="scope.row.avatar"
           :preview-src-list="[scope.row.avatar]"
           :preview-teleported="true"
-        ></el-image>
+        >
+        </el-image>
       </template>
-      <template #handler="scope">
-        <el-button link type="primary" size="small" plain>Detail</el-button>
-        <el-button link type="primary" size="small" plain>Edit</el-button>
+      <!-- 动态的插槽，不含一些通用的，可以让页面内去重写一些东西 -->
+      <template
+        v-for="item in dynamicPropsSlots"
+        :key="item.slotName"
+        #[item.slotName]="scope"
+      >
+        <slot
+          v-if="item.slotName"
+          :name="item.slotName"
+          :row="scope.row"
+        ></slot>
       </template>
       <!-- <template #createTime="scope">
           {{ $filters.formatTime(scope.row.createTime) }}
@@ -114,6 +128,17 @@ export default defineComponent({
       console.log(operationName)
     }
 
+    // 4.获取动态插槽的名字
+    const dynamicPropsSlots = props.contentTableConfig.propList.filter(
+      (item: any) => {
+        if (['handler', 'enable'].indexOf(item.slotName) == -1) {
+          return true
+        } else {
+          return false
+        }
+      }
+    )
+
     return {
       // userList,
       dataList,
@@ -123,7 +148,8 @@ export default defineComponent({
       dataCount,
       pageInfo,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      dynamicPropsSlots
     }
   }
 })

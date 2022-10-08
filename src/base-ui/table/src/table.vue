@@ -27,6 +27,7 @@
         v-for="propItem in propList"
         :key="propItem.prop"
         v-bind="propItem"
+        show-overflow-tooltip
         align="center"
       >
         <template #default="scope">

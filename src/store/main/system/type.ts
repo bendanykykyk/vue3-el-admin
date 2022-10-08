@@ -3,4 +3,6 @@ export interface ISystemState {
   userCount: number
   merchantList: any[]
   merchantCount: number
+  productList: any[]
+  productCount: number
 }
