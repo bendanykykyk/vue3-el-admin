@@ -8,7 +8,12 @@
         <slot name="operations"></slot>
       </div>
     </div>
-    <el-table :data="listData" border style="width: 100%" v-bind="$attrs">
+    <el-table
+      :data="listData"
+      border
+      style="width: 100%"
+      v-bind="childrenProps"
+    >
       <el-table-column
         type="selection"
         width="60"
@@ -90,6 +95,10 @@ export default defineComponent({
     pageInfo: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['handleSizeChange', 'handleCurrentChange'],

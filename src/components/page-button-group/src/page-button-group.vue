@@ -1,6 +1,9 @@
 <template>
   <div class="page-button-group-container">
-    <el-button type="primary" @click="$emit('handleClick', 'create')"
+    <el-button
+      type="primary"
+      v-if="isCreateShow"
+      @click="$emit('handleClick', 'create')"
       >新建</el-button
     >
     <el-dropdown>
@@ -29,6 +32,10 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'page-button-group',
   components: {},
+  props: {
+    isCreateShow: Boolean,
+    isEditShow: Boolean
+  },
   emits: ['handleClick'],
   setup() {
     return {}

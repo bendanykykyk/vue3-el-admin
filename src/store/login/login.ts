@@ -10,7 +10,7 @@ import {
   queryUserMenu
 } from '@/service/user/user'
 import localStorage from '@/utils/localStorage'
-import { mapMenuToRoutes } from '@/utils/map-menus'
+import { mapMenuToRoutes, mapMenusToRights } from '@/utils/map-menus'
 import router from '@/router'
 
 // 约束这个state的
@@ -19,7 +19,8 @@ const loginModule: Module<ILoginState, IRootState> = {
   state: {
     token: localStorage.get('token') || '',
     userInfo: localStorage.get('userInfo') || {},
-    userMenus: localStorage.get('userMenus') || []
+    userMenus: localStorage.get('userMenus') || [],
+    permissions: []
   },
   mutations: {
     changeToken(state, payload) {
@@ -36,6 +37,8 @@ const loginModule: Module<ILoginState, IRootState> = {
         // 就是给name为Main这个父级路由的children里加入一个个route对象
         router.addRoute('Main', route)
       })
+
+      state.permissions = mapMenusToRights(payload)
     }
   },
   actions: {

@@ -67,3 +67,20 @@ export function pathMapBreadcrumbs(
   }
   return breadcrumbs
 }
+
+export function mapMenusToRights(menus: any[]): any[] {
+  const permissions: any[] = []
+  const _recurseGetPermissions = (menus: any[]) => {
+    for (const menu of menus) {
+      if ('children' in menu) {
+        console.log(menu.children)
+        _recurseGetPermissions(menu.children ?? [])
+      } else {
+        console.log('遍历到可以用的了:' + menu)
+        permissions.push(menu)
+      }
+    }
+  }
+  _recurseGetPermissions(menus)
+  return permissions
+}

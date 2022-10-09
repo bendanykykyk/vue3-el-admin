@@ -1,5 +1,5 @@
-import { createStore } from 'vuex'
-import { IRootState } from './type'
+import { createStore, Store, useStore as useVuexStore } from 'vuex'
+import { IRootState, IStoreType } from './type'
 import loginModule from './login/login'
 import systemModule from './main/system/system'
 // 约束这个state的
@@ -15,5 +15,9 @@ const store = createStore<IRootState>({
     system: systemModule
   }
 })
+
+export function useStore(): Store<IStoreType> {
+  return useVuexStore()
+}
 
 export default store

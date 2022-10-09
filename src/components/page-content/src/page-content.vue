@@ -10,7 +10,11 @@
       @handleCurrentChange="handleCurrentChange"
     >
       <template #operations>
-        <page-button-group @handle-click="handleButtonGroupClick">
+        <page-button-group
+          @handle-click="handleButtonGroupClick"
+          :isEditShow="isEditShow"
+          :isCreateShow="isCreateShow"
+        >
         </page-button-group>
       </template>
       <!-- <template #footer>
@@ -74,6 +78,7 @@ import { defineComponent, computed, ref, watch } from 'vue'
 import PageButtonGroup from '@/components/page-button-group/src/page-button-group.vue'
 import UTable from '@/base-ui/table'
 import { useStore } from 'vuex'
+import { usePermissions } from '@/hooks/use-permissions'
 
 export default defineComponent({
   name: 'page-content',
@@ -138,6 +143,12 @@ export default defineComponent({
         }
       }
     )
+    // 获取按钮权限
+    console.log('权限：' + usePermissions(props.pageName, 'create'))
+    const isCreateShow = computed(() =>
+      usePermissions(props.pageName, 'create')
+    )
+    const isEditShow = computed(() => usePermissions(props.pageName, 'edit'))
 
     return {
       // userList,
@@ -149,7 +160,9 @@ export default defineComponent({
       pageInfo,
       handleSizeChange,
       handleCurrentChange,
-      dynamicPropsSlots
+      dynamicPropsSlots,
+      isCreateShow,
+      isEditShow
     }
   }
 })

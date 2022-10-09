@@ -1,6 +1,6 @@
 export const contentTableConfig = {
   title: '商品列表',
-  isColumnIndexShow: true,
+  isColumnIndexShow: false,
   isColumnSelectorShow: true,
   propList: [
     { prop: 'id', label: '商品编号', minWidth: '100' },
@@ -20,5 +20,11 @@ export const contentTableConfig = {
       slotName: 'enable'
     },
     { label: '操作', minWidth: '150', slotName: 'handler', fixed: 'right' }
-  ]
+  ],
+  childrenProps: {
+    rowKey: 'id',
+    treeProp: {
+      children: 'children'
+    }
+  }
 }
