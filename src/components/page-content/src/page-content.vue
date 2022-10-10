@@ -41,8 +41,15 @@
       </template>
 
       <template #handler="scope">
-        <el-button link type="primary" size="small" plain>Detail</el-button>
         <el-button link type="primary" size="small" plain>Edit</el-button>
+        <el-popconfirm
+          title="Are you sure to delete this?"
+          @confirm="handleDeleteClick(scope.row)"
+        >
+          <template #reference>
+            <el-button link type="primary" size="small" plain>Delete</el-button>
+          </template>
+        </el-popconfirm>
       </template>
       <template #avatar="scope">
         <el-image
@@ -103,7 +110,7 @@ export default defineComponent({
       store.getters['system/pageListCount'](props.pageName)
     )
 
-    const pageInfo = ref({ pageSize: 10, currentPage: 0 })
+    const pageInfo = ref({ pageSize: 10, currentPage: 1 })
     watch(pageInfo, () => getPageData())
     const getPageData = (queryInfo: any = {}) => {
       console.log('请求接口')
@@ -111,7 +118,7 @@ export default defineComponent({
         // url: '/api/user/query',
         pageName: props.pageName,
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           ...queryInfo
         }
@@ -150,6 +157,15 @@ export default defineComponent({
     )
     const isEditShow = computed(() => usePermissions(props.pageName, 'edit'))
 
+    // 删除
+    const handleDeleteClick = (item: any) => {
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          id: item.id
+        }
+      })
+    }
     return {
       // userList,
       dataList,
@@ -162,7 +178,8 @@ export default defineComponent({
       handleCurrentChange,
       dynamicPropsSlots,
       isCreateShow,
-      isEditShow
+      isEditShow,
+      handleDeleteClick
     }
   }
 })

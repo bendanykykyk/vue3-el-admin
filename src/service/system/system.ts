@@ -11,3 +11,13 @@ export function getPageListData(
     data: queryInfo
   })
 }
+
+export function deletePageData(
+  url: string,
+  queryInfo: any
+): Promise<IDataType> {
+  return uRequest.post<IDataType>({
+    url: url,
+    data: queryInfo
+  })
+}

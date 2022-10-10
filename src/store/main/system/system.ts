@@ -3,8 +3,11 @@ import type { Module } from 'vuex'
 import { IRootState } from '../../type'
 
 import { ISystemState } from './type'
-import type { IPageListParams } from '@/service/system/type'
-import { getPageListData } from '@/service/system/system'
+import type {
+  IPageListParams,
+  IDeletePageDataParams
+} from '@/service/system/type'
+import { getPageListData, deletePageData } from '@/service/system/system'
 
 // 约束这个state的
 const systemModule: Module<ISystemState, IRootState> = {
@@ -57,6 +60,20 @@ const systemModule: Module<ISystemState, IRootState> = {
 
       commit(`change${changePageName}List`, list)
       commit(`change${changePageName}Count`, totalCount)
+    },
+    async deletePageDataAction({ dispatch }, payload: IDeletePageDataParams) {
+      // 调用删除
+      const pageName = payload.pageName
+      const url = `/api/${pageName}/query`
+      await deletePageData(url, payload.queryInfo)
+      // 重新查询
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   },
   modules: {}
