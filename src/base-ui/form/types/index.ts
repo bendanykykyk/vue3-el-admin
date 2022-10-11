@@ -10,6 +10,7 @@ export interface IFormItem {
   // 针对特殊的属性,可以理解为原本有什么就可以用什么
   props?: any
   key: string
+  isHidden?: boolean
 }
 
 export interface IForm {

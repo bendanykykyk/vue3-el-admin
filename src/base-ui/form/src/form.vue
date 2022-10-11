@@ -9,6 +9,7 @@
         <template v-for="formItem in formItems" :key="formItem.label">
           <el-col v-bind="colLayout">
             <el-form-item
+              v-if="!formItem.isHidden"
               :label="formItem.label + ':'"
               :rules="formItem.rules"
               :style="itemStyle"

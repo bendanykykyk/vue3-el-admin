@@ -41,7 +41,14 @@
       </template>
 
       <template #handler="scope">
-        <el-button link type="primary" size="small" plain>Edit</el-button>
+        <el-button
+          link
+          type="primary"
+          size="small"
+          plain
+          @click="handleEditClick(scope.row)"
+          >Edit</el-button
+        >
         <el-popconfirm
           title="Are you sure to delete this?"
           @confirm="handleDeleteClick(scope.row)"
@@ -103,7 +110,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['onAddClick', 'onEditClick'],
+  setup(props, context) {
     const store = useStore()
     const dataList = computed(() => store.state.system[props.pageName + 'List'])
     const dataCount = computed(() =>
@@ -137,7 +145,19 @@ export default defineComponent({
     }
 
     const handleButtonGroupClick = (operationName: string) => {
-      console.log(operationName)
+      switch (operationName) {
+        case 'create':
+          console.log('create啦')
+          context.emit('onAddClick')
+          break
+
+        default:
+          break
+      }
+    }
+
+    const handleEditClick = (row: any) => {
+      context.emit('onEditClick', row)
     }
 
     // 4.获取动态插槽的名字
@@ -179,7 +199,8 @@ export default defineComponent({
       dynamicPropsSlots,
       isCreateShow,
       isEditShow,
-      handleDeleteClick
+      handleDeleteClick,
+      handleEditClick
     }
   }
 })
