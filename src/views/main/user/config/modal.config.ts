@@ -47,6 +47,20 @@ export const modalFormConfig: IForm = {
         { label: '篮球', value: 'basketball' },
         { label: '足球', value: 'football' }
       ]
+    },
+    {
+      type: 'select',
+      label: '部门',
+      key: 'departmentId',
+
+      typeData: []
+    },
+    {
+      type: 'select',
+      label: '职位',
+      key: 'dutyId',
+      // placeholder: '请选择喜欢的运动',
+      typeData: []
     }
   ]
 }

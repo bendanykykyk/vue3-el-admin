@@ -21,3 +21,20 @@ export function deletePageData(
     data: queryInfo
   })
 }
+
+export function updatePageData(
+  url: string,
+  updateData: any
+): Promise<IDataType> {
+  return uRequest.post<IDataType>({
+    url: url,
+    data: updateData
+  })
+}
+
+export function newPageData(url: string, newData: any): Promise<IDataType> {
+  return uRequest.post<IDataType>({
+    url: url,
+    data: newData
+  })
+}

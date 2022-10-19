@@ -1,13 +1,19 @@
 <template>
   <div class="page-modal-container">
-    <el-dialog v-model="dialogVisible" title="新建用户" width="50%" center>
+    <el-dialog
+      v-model="dialogVisible"
+      :title="title"
+      width="50%"
+      center
+      destroy-on-close
+    >
       <UForm v-model="formData" v-bind="modalFormConfig"> </UForm>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确 认</el-button
-          >
+          <el-button type="primary" @click="handleConfirmClick">
+            确 认
+          </el-button>
         </span>
       </template>
     </el-dialog>
@@ -16,6 +22,7 @@
 
 <script lang="ts">
 import UForm from '@/base-ui/form'
+import { useStore } from '@/store'
 import { defineComponent, ref, watch } from 'vue'
 export default defineComponent({
   name: 'page-modal',
@@ -30,6 +37,14 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    title: {
+      type: String,
+      default: '新建'
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
@@ -49,9 +64,27 @@ export default defineComponent({
       }
     )
 
+    const store = useStore()
+    const handleConfirmClick = () => {
+      dialogVisible.value = false
+      if (Object.keys(props.defaultInfo).length > 0) {
+        // 编辑
+        store.dispatch('system/updatePageDataAction', {
+          pageName: props.pageName,
+          formData: { ...formData.value }
+        })
+      } else {
+        // 新增
+        store.dispatch('system/newPageDataAction', {
+          pageName: props.pageName,
+          formData: { ...formData.value }
+        })
+      }
+    }
     return {
       dialogVisible,
-      formData
+      formData,
+      handleConfirmClick
     }
   }
 })

@@ -5,9 +5,14 @@ import { IRootState } from '../../type'
 import { ISystemState } from './type'
 import type {
   IPageListParams,
-  IDeletePageDataParams
+  IDeletePageDataParams,
+  INewPageDataParams
 } from '@/service/system/type'
-import { getPageListData, deletePageData } from '@/service/system/system'
+import {
+  getPageListData,
+  deletePageData,
+  newPageData
+} from '@/service/system/system'
 
 // 约束这个state的
 const systemModule: Module<ISystemState, IRootState> = {
@@ -56,7 +61,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       } = await getPageListData(url, payload.queryInfo)
 
       const changePageName =
-        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+        pageName!.slice(0, 1).toUpperCase() + pageName!.slice(1)
 
       commit(`change${changePageName}List`, list)
       commit(`change${changePageName}Count`, totalCount)
@@ -66,6 +71,34 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageName = payload.pageName
       const url = `/api/${pageName}/query`
       await deletePageData(url, payload.queryInfo)
+      // 重新查询
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    async newPageDataAction({ dispatch }, payload: INewPageDataParams) {
+      // 调用删除
+      const pageName = payload.pageName
+      const url = `/api/${pageName}/add`
+      await newPageData(url, payload.formData)
+      // 重新查询
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    async updatePageDataAction({ dispatch }, payload: INewPageDataParams) {
+      // 调用删除
+      const pageName = payload.pageName
+      const url = `/api/${pageName}/update`
+      await newPageData(url, payload.formData)
       // 重新查询
       dispatch('getPageListAction', {
         pageName,
