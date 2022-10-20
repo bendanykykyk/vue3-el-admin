@@ -13,7 +13,12 @@
           <!-- <el-dropdown-item>Action 2</el-dropdown-item>
           <el-dropdown-item>Action 3</el-dropdown-item>
           <el-dropdown-item disabled>Action 4</el-dropdown-item> -->
-          <el-dropdown-item icon="CircleCloseFilled"> 登出 </el-dropdown-item>
+          <el-dropdown-item
+            icon="CircleCloseFilled"
+            @click="handleLoginOutClick"
+          >
+            登出
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -21,7 +26,9 @@
 </template>
 
 <script lang="ts">
+import localStorage from '@/utils/localStorage'
 import { defineComponent, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 export default defineComponent({
   name: 'user-info',
@@ -30,9 +37,16 @@ export default defineComponent({
   //这里存放数据
   setup() {
     const store = useStore()
+    const router = useRouter()
     let name = computed(() => store.state.login.userInfo.name)
+
+    const handleLoginOutClick = () => {
+      localStorage.remove('token')
+      router.push({ name: 'Login' })
+    }
     return {
-      name
+      name,
+      handleLoginOutClick
     }
   }
 })

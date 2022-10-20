@@ -69,7 +69,6 @@
 </template>
 
 <script lang="ts">
-import { isContext } from 'vm'
 import { defineComponent, PropType, computed, ref, watch } from 'vue'
 import type { IFormItem } from '../types'
 

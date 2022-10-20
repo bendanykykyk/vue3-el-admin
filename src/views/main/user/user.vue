@@ -109,6 +109,7 @@ export default defineComponent({
       const dutyIdItems = modalFormConfig.formItems.find((item) => {
         return item.key === 'dutyId'
       })
+
       const entireDepartments = store.state.entireDepartments
 
       departmentIdItems!.typeData = entireDepartments.map((item) => {
