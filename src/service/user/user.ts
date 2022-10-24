@@ -20,7 +20,7 @@ export const queryMerchantDetail = (params: IEmptyObject): Promise<IData> => {
 // 用户 查询用户 菜单
 export const queryUserMenu = (params: IMenuData): Promise<IData> => {
   return uRequest.get<IData>({
-    url: '/api/menu/one-level/queryList',
+    url: '/api/menu/query',
     params
   })
 }
