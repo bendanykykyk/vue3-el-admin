@@ -2,10 +2,11 @@ const path = require('path')
 // 最终会在nodejs执行， 这是commonJS的规范
 module.exports = {
   // 1.配置方式一: CLI提供的属性
-  outputDir: './build/vue3-admin',
+  // outputDir: './build/vue3-admin',
   publicPath: './',
-  assetsDir: './static',
-  indexPath: './html/index.html',
+  // assetsDir: './static',
+  assetsDir: 'static',
+  // indexPath: './html/index.html',
   lintOnSave: process.env.NODE_ENV !== 'production',
   // 解决跨域
   // devServer: {
